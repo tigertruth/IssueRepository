@@ -7,7 +7,6 @@ def crawlBestReplysite():
     linkUrl_before = ""
 
     year = 2017
-    article = ""
     urlFile = open('urls.txt', 'w', encoding="UTF-8")
     for month in range(1,13):
         for date in range(1,32):   #월일 별로 순환
@@ -37,6 +36,7 @@ def crawlBestReplysite():
                         linkUrl_before = linkUrl
                         sourceCodeNews = requests.get(linkUrl)
                         soupNews = BeautifulSoup(sourceCodeNews.text, 'lxml')
+                        article = ""
                         for linkNews in soupNews.find_all("div", id="harmonyContainer"):
                             article += linkNews.text+" "
                         urlFile.write(title+"\t" + linkUrl + article +"\n")
