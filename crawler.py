@@ -24,7 +24,7 @@ def crawlBestReplysite():
                 sourceCode = requests.get(url)
                 soup = BeautifulSoup(sourceCode.text, 'lxml')
                 for link in soup.find_all("a", class_ ="link_txt"):
-                    title = link.text
+                    title = link.text.strip('\n')
                     linkUrl = link.get("href")
 
                     if linkUrl == linkUrl_before:
@@ -38,11 +38,32 @@ def crawlBestReplysite():
                         soupNews = BeautifulSoup(sourceCodeNews.text, 'lxml')
                         article = ""
                         for linkNews in soupNews.find_all("div", id="harmonyContainer"):
-                            article += linkNews.text+" "
-                        urlFile.write(title+"\t" + linkUrl + article +"\n")
+                            text = replace(linkNews.text)
+                            article += text+" "
+                            print(linkNews.text)
+                        urlFile.write(title + "\t" + linkUrl+ "\t" + article+ "\t" + str(month)+ "\t" + str(date)+"\n")
             except Exception as ex:
                 print(ex)
                 continue
     urlFile.close()
+
+
+
+#공백제거함수 및 뉴스 기자 이름 제거
+def replace(string):
+    output = string.replace('[', ' ')
+    output = output.replace(']', ' ')
+    output = output.replace('\ufeff;', ' ')
+    output = output.replace('\u200b', ' ')
+    output = output.replace('&nbsp;', ' ')
+    output = output.replace('&gt;', ' ')
+    output = output.replace('&lt;', ' ')
+    output = output.replace('\xa0', ' ')
+    output = output.replace("\t", " ")
+    output = output.replace("\n", " ")
+    output = output.replace("\r", " ")
+    return output
+
+
 
 crawlBestReplysite()
