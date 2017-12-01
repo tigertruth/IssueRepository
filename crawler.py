@@ -40,7 +40,7 @@ def crawlBestReplysite():
                         for linkNews in soupNews.find_all("div", id="harmonyContainer"):
                             text = replace(linkNews.text)
                             article += text+" "
-                            print(linkNews.text)
+
                         urlFile.write(title + "\t" + linkUrl+ "\t" + article+ "\t" + str(month)+ "\t" + str(date)+"\n")
             except Exception as ex:
                 print(ex)
